@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>SentinalPay - Synthetic Transaction Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="page">
+        <h1 class="title">SentinalPay - Synthetic Transaction Portal</h1>
+        <p class="subtitle">
+            Isolation Forest (Pre-layer) + Random Forest (Post-layer)
+        </p>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Enter Transaction Parameters</h2>
+            </div>
+
+            <form id="fraud-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="amount">Amount (₹)</label>
+                        <input
+                            type="number"
+                            id="amount"
+                            name="amount"
+                            step="0.01"
+                            min="0"
+                            placeholder="e.g. 149.62"
+                            required
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="from_account">From account number</label>
+                        <input
+                            type="text"
+                            id="from_account"
+                            name="from_account"
+                            placeholder="e.g. 1234-****-****-5678"
+                            required
+                        />
+                        <small>Account numbers are recorded but not used for prediction.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="to_account">To account number</label>
+                        <input
+                            type="text"
+                            id="to_account"
+                            name="to_account"
+                            placeholder="e.g. 9876-****-****-4321"
+                            required
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="template">Synthetic template row</label>
+                        <select id="template" name="template">
+                            <option value="auto" selected>Auto (like dataset)</option>
+                            <option value="legit">Similar to legitimate transaction</option>
+                            <option value="fraud">Similar to fraudulent transaction</option>
+                        </select>
+                        <small>Choose which type of dataset row to copy hidden features from.</small>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" id="predict-btn" class="btn-primary">
+                        Proceed Payment
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div id="result-card" class="result-card hidden">
+            <h3 id="result-title"></h3>
+            <p id="result-summary"></p>
+
+            <div class="result-metrics">
+                <div><span>Two-layer fraud probability:</span>
+                    <span id="prob-two-layer"></span>
+                </div>
+                <div><span>Baseline fraud probability:</span>
+                    <span id="prob-baseline"></span>
+                </div>
+                <div><span>Pre-layer anomaly score:</span>
+                    <span id="pre-score"></span>
+                </div>
+                <div><span>Pre-layer flag:</span>
+                    <span id="pre-flag"></span>
+                </div>
+                <div><span>From account:</span>
+                    <span id="from-account"></span>
+                </div>
+                <div><span>To account:</span>
+                    <span id="to-account"></span>
+                </div>
+                <div><span>Pre-layer message:</span>
+                    <span id="pre-message"></span>
+                </div>
+                <div><span>Post-layer message:</span>
+                    <span id="post-message"></span>
+                </div>
+            </div>
+        </div>
+
+        <p class="footer-note">
+            Model: IsolationForest + RandomForest (Two-layer pre/post)
+        </p>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
